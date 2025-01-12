@@ -60,6 +60,43 @@ class BSTTreeNode:
         else:
             return False
 
+    #  function to find maximum value node from left subtree
+    def find_max(self):
+        if self.right is None:
+            return self.data
+        return self.right.find_max()
+
+    # function to find minimum value node from right subtree
+    def find_min(self):
+        if self.left is None:
+            return self.data
+
+        return self.left.find_min()
+
+    #     function to delete a node from bst and rearrange so that if follows the rules of bst
+    def delete_node(self,val):
+        if val < self.data:
+            if self.left:
+                self.left=self.left.delete_node(val)
+        elif val>self.data:
+             if self.right:
+                self.right=self.right.delete_node(val)
+
+        else:
+            if self.left is None and self.right is None:
+                return None
+            if self.left is None:
+                return self.right
+            if self.right is None:
+                return self.left
+
+            min_val=self.right.find_min()
+            self.data=min_val
+            self.right=self.right.delete_node(min_val)
+
+            return self
+
+
 
 def build_tree(numbers):
     root=BSTTreeNode(numbers[0])
@@ -74,7 +111,9 @@ if __name__ == '__main__':
     numbers=[18,5,2,19,8,22,17,34]
 
     num_tree=build_tree(numbers)
-    # print(num_tree.inorder_traversal())
+    print(num_tree.inorder_traversal())
 
 
-    print(num_tree.search(200))
+    num_tree.delete_node(2)
+    print(num_tree.inorder_traversal())
+    # print(num_tree.search(200))
